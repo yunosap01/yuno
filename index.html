@@ -659,8 +659,8 @@ footer{border-top:1px solid var(--card-border);padding:60px 0 30px;}
               <input type="text" id="sf-name" placeholder="Ton prénom" required>
             </div>
             <div class="form-group">
-              <label for="sf-contact">Contact (TikTok, email...)</label>
-              <input type="text" id="sf-contact" placeholder="@pseudo ou email" required>
+              <label for="sf-email">Email</label>
+              <input type="email" id="sf-email" placeholder="ton@email.com" required>
             </div>
           </div>
           <div class="form-group">
@@ -670,12 +670,26 @@ footer{border-top:1px solid var(--card-border);padding:60px 0 30px;}
           <div class="form-row">
             <div class="form-group">
               <label for="sf-budget">Budget max</label>
-              <input type="text" id="sf-budget" placeholder="Ex : 100€">
+              <input type="text" id="sf-budget" placeholder="Ex : 100€" required>
             </div>
             <div class="form-group">
               <label for="sf-size">Taille</label>
-              <input type="text" id="sf-size" placeholder="Ex : M / 42 / L">
+              <input type="text" id="sf-size" placeholder="Ex : M / 42 / L" required>
             </div>
+          </div>
+          <div class="form-group">
+            <label for="sf-network">Tu veux que je te DM ? (optionnel)</label>
+            <select id="sf-network">
+              <option value="">Non, l'email suffit</option>
+              <option value="Instagram">Instagram</option>
+              <option value="TikTok">TikTok</option>
+              <option value="Discord">Discord</option>
+              <option value="Telegram">Telegram</option>
+            </select>
+          </div>
+          <div class="form-group" id="sf-handle-group" style="display:none;">
+            <label for="sf-handle" id="sf-handle-label">Ton @</label>
+            <input type="text" id="sf-handle" placeholder="@pseudo">
           </div>
           <div class="form-group">
             <label for="sf-details">Détails complémentaires</label>
@@ -930,16 +944,37 @@ function showToast(msg){
 
 const FORM_ENDPOINT = 'https://formsubmit.co/ajax/contactyunoresell@gmail.com';
 
+const sfNetwork = document.getElementById('sf-network');
+const sfHandleGroup = document.getElementById('sf-handle-group');
+const sfHandle = document.getElementById('sf-handle');
+const sfHandleLabel = document.getElementById('sf-handle-label');
+sfNetwork.addEventListener('change', () => {
+  const choice = sfNetwork.value;
+  if(choice){
+    sfHandleGroup.style.display = 'block';
+    sfHandle.required = true;
+    sfHandleLabel.textContent = 'Ton @ ' + choice;
+    sfHandle.placeholder = '@pseudo ' + choice;
+  } else {
+    sfHandleGroup.style.display = 'none';
+    sfHandle.required = false;
+    sfHandle.value = '';
+  }
+});
+
 document.getElementById('searchForm').addEventListener('submit', async function(e){
   e.preventDefault();
   const submitBtn = this.querySelector('button[type="submit"]');
+  const network = sfNetwork.value;
   const payload = {
     _subject: 'Nouvelle demande de recherche — yuno_resell',
     Prenom: document.getElementById('sf-name').value,
-    Contact: document.getElementById('sf-contact').value,
+    Email: document.getElementById('sf-email').value,
     'Piece recherchee': document.getElementById('sf-item').value,
-    'Budget max': document.getElementById('sf-budget').value || 'Non précisé',
-    Taille: document.getElementById('sf-size').value || 'Non précisée',
+    'Budget max': document.getElementById('sf-budget').value,
+    Taille: document.getElementById('sf-size').value,
+    'Reseau pour DM': network || 'Aucun',
+    'Pseudo': network ? sfHandle.value : 'N/A',
     'Details complementaires': document.getElementById('sf-details').value || 'Aucun',
     _template: 'table'
   };
@@ -953,6 +988,8 @@ document.getElementById('searchForm').addEventListener('submit', async function(
     if(res.ok){
       document.getElementById('searchSuccess').classList.add('show');
       this.reset();
+      sfHandleGroup.style.display = 'none';
+      sfHandle.required = false;
       showToast('Demande envoyée ✓');
     } else {
       showToast("Erreur d'envoi — réessaie ou écris-moi directement.");
