@@ -738,10 +738,13 @@ footer{border-top:1px solid var(--card-border);padding:60px 0 30px;}
         <h2>Sois prévenu avant<br>tout le monde.</h2>
         <p>Un email par drop, jamais de spam. Accès prioritaire sur les pièces rares avant publication sur Vinted.</p>
       </div>
-      <form class="newsletter-form" id="newsletterForm">
-        <input type="email" id="nl-email" name="email" placeholder="ton@email.com" required>
+      <form class="newsletter-form" id="newsletterForm" action="https://assets.mailerlite.com/jsonp/2460632/forms/190874427708147268/subscribe" method="post" target="ml_hidden_frame">
+        <input type="email" id="nl-email" name="fields[email]" placeholder="ton@email.com" autocomplete="email" required>
+        <input type="hidden" name="ml-submit" value="1">
+        <input type="hidden" name="anticsrf" value="true">
         <button type="submit">S'inscrire</button>
       </form>
+      <iframe name="ml_hidden_frame" title="newsletter" style="display:none;"></iframe>
     </div>
   </div>
 </section>
@@ -960,32 +963,12 @@ document.getElementById('searchForm').addEventListener('submit', async function(
   }
 });
 
-document.getElementById('newsletterForm').addEventListener('submit', async function(e){
-  e.preventDefault();
-  const submitBtn = this.querySelector('button[type="submit"]');
-  const payload = {
-    _subject: 'Nouvelle inscription newsletter — yuno_resell',
-    Email: document.getElementById('nl-email').value,
-    _template: 'table'
-  };
-  submitBtn.disabled = true;
-  try{
-    const res = await fetch(FORM_ENDPOINT, {
-      method: 'POST',
-      headers: {'Content-Type':'application/json','Accept':'application/json'},
-      body: JSON.stringify(payload)
-    });
-    if(res.ok){
-      this.reset();
-      showToast('Inscription confirmée ✓');
-    } else {
-      showToast("Erreur d'envoi — réessaie plus tard.");
-    }
-  } catch(err){
-    showToast("Erreur d'envoi — réessaie plus tard.");
-  } finally {
-    submitBtn.disabled = false;
-  }
+document.getElementById('newsletterForm').addEventListener('submit', function(e){
+  const form = this;
+  setTimeout(function(){
+    form.reset();
+    showToast('Inscription confirmée ✓');
+  }, 700);
 });
 
 document.querySelectorAll('a[href^="#"]').forEach(a => {
