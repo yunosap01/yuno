@@ -277,16 +277,16 @@ section{padding:120px 0;position:relative;}
 .nl-domain-btn.open .nl-arrow{transform:rotate(180deg);}
 .nl-domain-btn .nl-domain-label-text{color:var(--gold);}
 
-/* ===== DOMAIN DROPDOWN — REDESIGNED LARGE ===== */
+/* ===== DOMAIN DROPDOWN — compact, ~5 items visible ===== */
 .nl-domain-dropdown{
   position:absolute;
   top:calc(100% + 8px);
   right:0;
   background:var(--card);
   border:1px solid var(--card-border);
-  width:420px;
+  width:260px;
   z-index:9999;
-  box-shadow:0 24px 64px rgba(0,0,0,0.85);
+  box-shadow:0 16px 48px rgba(0,0,0,0.85);
   display:none;
   border-radius:4px;
   overflow:hidden;
@@ -307,7 +307,7 @@ section{padding:120px 0;position:relative;}
 
 /* Search bar at top */
 .nl-domain-search-wrap{
-  padding:16px;
+  padding:10px 12px;
   border-bottom:1px solid var(--card-border);
   background:var(--black);
   flex-shrink:0;
@@ -315,54 +315,54 @@ section{padding:120px 0;position:relative;}
 .nl-domain-search-inner{
   display:flex;
   align-items:center;
-  gap:10px;
+  gap:8px;
   background:var(--card);
   border:1px solid var(--card-border);
   border-radius:3px;
-  padding:0 14px;
+  padding:0 10px;
   transition:border-color 0.2s;
 }
 .nl-domain-search-inner:focus-within{border-color:var(--gold);}
 .nl-domain-search-icon{
   color:var(--taupe);
-  font-size:15px;
+  font-size:13px;
   flex-shrink:0;
   pointer-events:none;
 }
 .nl-domain-search{
   flex:1;
-  padding:12px 0;
+  padding:9px 0;
   background:transparent;
   border:none;
   color:var(--cream);
   font-family:var(--mono);
-  font-size:14px;
+  font-size:13px;
   outline:none;
 }
-.nl-domain-search::placeholder{color:var(--taupe);font-size:13px;}
+.nl-domain-search::placeholder{color:var(--taupe);font-size:12px;}
 
-/* List */
+/* List — fixed height showing ~5 items (each ~44px) */
 .nl-domain-list{
   overflow-y:auto;
   flex:1;
   min-height:0;
-  max-height:360px;
+  max-height:220px;
 }
-.nl-domain-list::-webkit-scrollbar{width:5px;}
-.nl-domain-list::-webkit-scrollbar-thumb{background:var(--card-border);border-radius:3px;}
+.nl-domain-list::-webkit-scrollbar{width:4px;}
+.nl-domain-list::-webkit-scrollbar-thumb{background:var(--card-border);border-radius:2px;}
 .nl-domain-list::-webkit-scrollbar-track{background:transparent;}
 
 .nl-domain-item{
-  padding:13px 20px;
+  padding:11px 16px;
   font-family:var(--mono);
-  font-size:14px;
+  font-size:13px;
   color:var(--cream-dim);
   cursor:pointer;
   transition:background 0.15s, color 0.15s;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:16px;
+  gap:10px;
   border-bottom:1px solid rgba(255,255,255,0.03);
 }
 .nl-domain-item:last-child{border-bottom:none;}
@@ -372,20 +372,20 @@ section{padding:120px 0;position:relative;}
   color:var(--gold);
   font-weight:700;
   border-left:3px solid var(--gold);
-  padding-left:17px;
+  padding-left:13px;
 }
 .nl-domain-item .nl-domain-name{
   font-weight:600;
-  font-size:14px;
+  font-size:13px;
 }
 .nl-domain-item .nl-domain-tag{
-  font-size:11px;
+  font-size:10px;
   opacity:0.55;
   font-weight:400;
   flex-shrink:0;
   color:var(--taupe);
   background:rgba(255,255,255,0.05);
-  padding:3px 8px;
+  padding:2px 6px;
   border-radius:2px;
 }
 .nl-domain-item.selected .nl-domain-tag{
@@ -395,21 +395,21 @@ section{padding:120px 0;position:relative;}
 }
 .nl-domain-item .nl-domain-check{
   color:var(--gold);
-  font-size:14px;
+  font-size:12px;
   opacity:0;
   flex-shrink:0;
 }
 .nl-domain-item.selected .nl-domain-check{opacity:1;}
 
 .nl-domain-empty{
-  padding:36px 20px;
+  padding:28px 16px;
   font-family:var(--mono);
-  font-size:13px;
+  font-size:12px;
   color:var(--taupe);
   text-align:center;
 }
 .nl-domain-separator{
-  padding:10px 20px 6px;
+  padding:8px 16px 5px;
   font-family:var(--mono);
   font-size:10px;
   color:var(--taupe);
@@ -982,7 +982,7 @@ footer{border-top:1px solid var(--card-border);padding:60px 0 30px;}
               <div class="nl-domain-search-wrap">
                 <div class="nl-domain-search-inner">
                   <span class="nl-domain-search-icon">🔍</span>
-                  <input type="text" class="nl-domain-search" id="nlDomainSearch" placeholder="Rechercher un domaine..." autocomplete="off" spellcheck="false">
+                  <input type="text" class="nl-domain-search" id="nlDomainSearch" placeholder="Rechercher..." autocomplete="off" spellcheck="false">
                 </div>
               </div>
               <div class="nl-domain-list" id="nlDomainList"></div>
@@ -1396,8 +1396,8 @@ function domainItemHTML(d){
   const isSelected = d.domain === selectedDomain;
   return `<div class="nl-domain-item${isSelected ? ' selected' : ''}" data-domain="${d.domain}" role="option" aria-selected="${isSelected}" tabindex="0">
     <span class="nl-domain-name">${d.domain}</span>
-    <div style="display:flex;align-items:center;gap:8px;">
-      <span class="nl-domain-tag">${d.label}${d.tag === 'Populaire' ? ' ★' : ''}</span>
+    <div style="display:flex;align-items:center;gap:6px;">
+      <span class="nl-domain-tag">${d.label}</span>
       <span class="nl-domain-check">✓</span>
     </div>
   </div>`;
