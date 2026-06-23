@@ -295,7 +295,7 @@ footer{border-top:1px solid var(--card-border);padding:60px 0 30px;}
 @media (max-width:768px){.sticky-cta{display:flex;}}
 .sticky-cta .btn{flex:1;padding:13px 16px;font-size:12px;}
 
-.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--cream);color:var(--black);padding:12px 22px;font-family:var(--mono);font-size:13px;z-index:900;opacity:0;pointer-events:none;transition:all 0.3s var(--ease);}
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--cream);color:var(--black);padding:14px 22px;font-family:var(--mono);font-size:13px;z-index:900;opacity:0;pointer-events:none;transition:all 0.3s var(--ease);max-width:90vw;width:max-content;max-width:420px;text-align:center;line-height:1.5;border-radius:var(--radius);}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
 </head>
@@ -939,7 +939,7 @@ function showToast(msg){
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
-  setTimeout(()=> t.classList.remove('show'), 2600);
+  setTimeout(()=> t.classList.remove('show'), 5500);
 }
 
 const FORM_ENDPOINT = 'https://formsubmit.co/ajax/contactyunoresell@gmail.com';
@@ -1005,7 +1005,7 @@ document.getElementById('newsletterForm').addEventListener('submit', function(e)
   const form = this;
   setTimeout(function(){
     form.reset();
-    showToast('Inscription confirmée ✓');
+    showToast('Merci ! Confirme ton inscription via le mail reçu (sous 15 min max) — vérifie aussi tes spams / indésirables.');
   }, 700);
 });
 
