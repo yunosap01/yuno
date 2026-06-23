@@ -682,25 +682,25 @@ footer{border-top:1px solid var(--card-border);padding:60px 0 30px;}
         <form id="searchForm">
           <div class="form-row">
             <div class="form-group">
-              <label for="sf-name">Prénom</label>
+              <label for="sf-name">Prénom *</label>
               <input type="text" id="sf-name" placeholder="Ton prénom" required>
             </div>
             <div class="form-group">
-              <label for="sf-email">Email</label>
+              <label for="sf-email">Email *</label>
               <input type="email" id="sf-email" placeholder="ton@email.com" required>
             </div>
           </div>
           <div class="form-group">
-            <label for="sf-item">Pièce recherchée</label>
+            <label for="sf-item">Pièce recherchée *</label>
             <input type="text" id="sf-item" placeholder="Ex : Polo Ralph Lauren taille M" required>
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label for="sf-budget">Budget max</label>
+              <label for="sf-budget">Budget max *</label>
               <input type="text" id="sf-budget" placeholder="Ex : 100€" required>
             </div>
             <div class="form-group">
-              <label for="sf-size">Taille</label>
+              <label for="sf-size">Taille *</label>
               <input type="text" id="sf-size" placeholder="Ex : M / 42 / L" required>
             </div>
           </div>
@@ -731,6 +731,7 @@ footer{border-top:1px solid var(--card-border);padding:60px 0 30px;}
             <div class="g-recaptcha" data-sitekey="6LeYSS8tAAAAAE-yFuCM9H7JkFZzF6qLJb4wBOaU" data-theme="dark"></div>
             <div class="captcha-error" id="captchaError">Merci de cocher la case "Je ne suis pas un robot".</div>
           </div>
+          <p class="form-note">* champ obligatoire</p>
           <button type="submit" class="btn btn-primary btn-block">Envoyer ma demande</button>
           <div class="form-success" id="searchSuccess">✓ Demande envoyée — réponse sous 24h en moyenne.</div>
         </form>
