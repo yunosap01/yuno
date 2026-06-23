@@ -199,7 +199,6 @@ section{padding:120px 0;position:relative;}
 .cd-num{font-family:var(--mono);font-size:30px;font-weight:700;color:var(--gold);background:var(--black);border:1px solid var(--card-border);padding:8px 0;display:block;}
 .cd-unit-label{font-size:10px;color:var(--taupe);text-transform:uppercase;margin-top:6px;font-family:var(--mono);}
 
-/* Section coups de coeur */
 .coups-section-title{
   font-family:var(--display);
   font-size:clamp(52px,9vw,120px);
@@ -257,15 +256,91 @@ section{padding:120px 0;position:relative;}
 .faq-a{max-height:0;overflow:hidden;transition:max-height 0.4s var(--ease);}
 .faq-a-inner{padding:0 4px 26px;color:var(--taupe);font-size:15px;line-height:1.7;max-width:620px;}
 
+/* ===== NEWSLETTER ===== */
 .newsletter{background:var(--gold);color:var(--black);padding:90px 0;}
 .newsletter-inner{display:flex;justify-content:space-between;align-items:center;gap:40px;flex-wrap:wrap;}
 .newsletter h2{font-size:clamp(30px,5vw,48px);color:var(--black);max-width:480px;}
 .newsletter p{font-family:var(--mono);font-size:13px;margin-top:14px;max-width:420px;}
-.newsletter-form{display:flex;gap:0;min-width:340px;flex:1;max-width:440px;}
-@media (max-width:500px){.newsletter-form{min-width:0;flex-direction:column;gap:10px;}}
-.newsletter-form input{flex:1;padding:16px 18px;border:2px solid var(--black);background:transparent;color:var(--black);font-family:var(--mono);font-size:14px;}
-.newsletter-form input::placeholder{color:rgba(10,10,10,0.5);}
-.newsletter-form button{background:var(--black);color:var(--gold);padding:0 28px;font-family:var(--mono);font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;white-space:nowrap;}
+
+/* Email builder */
+.nl-form-wrap{display:flex;flex-direction:column;gap:10px;flex:1;min-width:320px;max-width:460px;}
+@media(max-width:500px){.nl-form-wrap{min-width:0;width:100%;}}
+
+.nl-email-builder{display:flex;align-items:stretch;border:2px solid var(--black);background:rgba(10,10,10,0.06);height:52px;}
+#nl-username{flex:1;padding:0 10px 0 16px;border:none;background:transparent;color:var(--black);font-family:var(--mono);font-size:14px;min-width:0;outline:none;}
+#nl-username::placeholder{color:rgba(10,10,10,0.4);}
+.nl-at{padding:0 5px;display:flex;align-items:center;color:rgba(10,10,10,0.55);font-family:var(--mono);font-size:14px;flex-shrink:0;user-select:none;}
+.nl-domain-wrap{position:relative;flex-shrink:0;display:flex;align-items:stretch;}
+.nl-domain-btn{background:rgba(10,10,10,0.12);color:var(--black);border:none;border-left:2px solid rgba(10,10,10,0.2);padding:0 13px;height:100%;font-family:var(--mono);font-size:12px;cursor:pointer;white-space:nowrap;font-weight:700;transition:background 0.2s;display:flex;align-items:center;gap:6px;}
+.nl-domain-btn:hover{background:rgba(10,10,10,0.2);}
+.nl-domain-btn .nl-arrow{font-size:10px;transition:transform 0.2s;display:inline-block;}
+.nl-domain-btn.open .nl-arrow{transform:rotate(180deg);}
+
+.nl-domain-dropdown{
+  position:absolute;
+  top:calc(100% + 8px);
+  right:0;
+  background:var(--card);
+  border:1px solid var(--card-border);
+  width:240px;
+  z-index:9999;
+  box-shadow:0 12px 40px rgba(0,0,0,0.6);
+  display:none;
+}
+.nl-domain-dropdown.open{display:block;}
+.nl-domain-search-wrap{padding:10px 12px;border-bottom:1px solid var(--card-border);background:var(--black);}
+.nl-domain-search{
+  width:100%;
+  padding:8px 12px;
+  background:var(--card);
+  border:1px solid var(--card-border);
+  color:var(--cream);
+  font-family:var(--mono);
+  font-size:12px;
+  outline:none;
+  transition:border-color 0.2s;
+}
+.nl-domain-search:focus{border-color:var(--gold);}
+.nl-domain-search::placeholder{color:var(--taupe);}
+.nl-domain-list{max-height:220px;overflow-y:auto;}
+.nl-domain-list::-webkit-scrollbar{width:4px;}
+.nl-domain-list::-webkit-scrollbar-thumb{background:var(--card-border);}
+.nl-domain-item{
+  padding:11px 16px;
+  font-family:var(--mono);
+  font-size:12px;
+  color:var(--cream-dim);
+  cursor:pointer;
+  transition:background 0.15s, color 0.15s;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.nl-domain-item:hover{background:rgba(201,168,118,0.12);color:var(--cream);}
+.nl-domain-item.selected{background:var(--gold);color:var(--black);font-weight:700;}
+.nl-domain-item .nl-domain-tag{font-size:10px;opacity:0.6;font-weight:400;}
+.nl-domain-item.selected .nl-domain-tag{opacity:0.7;}
+.nl-domain-empty{padding:18px 16px;font-family:var(--mono);font-size:12px;color:var(--taupe);text-align:center;}
+.nl-domain-separator{padding:6px 16px;font-family:var(--mono);font-size:10px;color:var(--taupe);text-transform:uppercase;letter-spacing:0.08em;background:var(--black-soft);border-top:1px solid var(--card-border);}
+
+.nl-submit-btn{
+  background:var(--black);
+  color:var(--gold);
+  padding:15px 28px;
+  font-family:var(--mono);
+  font-size:13px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.06em;
+  border:none;
+  cursor:pointer;
+  transition:background 0.2s, color 0.2s;
+  white-space:nowrap;
+}
+.nl-submit-btn:hover{background:#1a1a18;color:var(--gold-bright);}
+.nl-preview{font-family:var(--mono);font-size:11px;color:rgba(10,10,10,0.5);margin-top:4px;min-height:16px;letter-spacing:0.02em;}
+.nl-preview span{color:rgba(10,10,10,0.7);font-weight:600;}
+/* ===== END NEWSLETTER ===== */
 
 .contact-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--card-border);border:1px solid var(--card-border);}
 @media (max-width:900px){.contact-grid{grid-template-columns:repeat(2,1fr);}}
@@ -783,6 +858,7 @@ footer{border-top:1px solid var(--card-border);padding:60px 0 30px;}
   </div>
 </section>
 
+<!-- ===== NEWSLETTER SECTION ===== -->
 <section class="newsletter">
   <div class="wrap">
     <div class="newsletter-inner reveal">
@@ -790,11 +866,34 @@ footer{border-top:1px solid var(--card-border);padding:60px 0 30px;}
         <h2>Sois prévenu avant<br>tout le monde.</h2>
         <p>Un email par drop, jamais de spam. Accès prioritaire sur les pièces rares avant publication sur Vinted.</p>
       </div>
-      <form class="newsletter-form" id="newsletterForm" action="https://assets.mailerlite.com/jsonp/2460632/forms/190874427708147268/subscribe" method="post" target="ml_hidden_frame">
-        <input type="email" id="nl-email" name="fields[email]" placeholder="ton@email.com" autocomplete="email" required>
+
+      <form class="nl-form-wrap" id="newsletterForm" action="https://assets.mailerlite.com/jsonp/2460632/forms/190874427708147268/subscribe" method="post" target="ml_hidden_frame">
+        <!-- Email builder -->
+        <div class="nl-email-builder">
+          <input type="text" id="nl-username" placeholder="ton.prenom" autocomplete="off" required>
+          <span class="nl-at">@</span>
+          <div class="nl-domain-wrap">
+            <button type="button" class="nl-domain-btn" id="nlDomainBtn" aria-haspopup="listbox" aria-expanded="false">
+              <span id="nlDomainLabel">gmail.com</span>
+              <span class="nl-arrow">▾</span>
+            </button>
+            <div class="nl-domain-dropdown" id="nlDomainDropdown" role="listbox">
+              <div class="nl-domain-search-wrap">
+                <input type="text" class="nl-domain-search" id="nlDomainSearch" placeholder="Rechercher un domaine..." autocomplete="off" spellcheck="false">
+              </div>
+              <div class="nl-domain-list" id="nlDomainList"></div>
+            </div>
+          </div>
+        </div>
+        <!-- Preview live -->
+        <div class="nl-preview" id="nlPreview">&nbsp;</div>
+
+        <!-- Hidden real email field for MailerLite -->
+        <input type="hidden" id="nl-email" name="fields[email]">
         <input type="hidden" name="ml-submit" value="1">
         <input type="hidden" name="anticsrf" value="true">
-        <button type="submit">S'inscrire</button>
+
+        <button type="submit" class="nl-submit-btn">S'inscrire</button>
       </form>
       <iframe name="ml_hidden_frame" title="newsletter" style="display:none;"></iframe>
     </div>
@@ -900,6 +999,7 @@ footer{border-top:1px solid var(--card-border);padding:60px 0 30px;}
 </div>
 
 <script>
+// ===== NAV SCROLL =====
 let lastY = window.scrollY;
 const nav = document.getElementById('nav');
 const stickyCta = document.getElementById('stickyCta');
@@ -910,6 +1010,7 @@ window.addEventListener('scroll', () => {
   if(y > 600){ stickyCta.classList.add('show'); } else { stickyCta.classList.remove('show'); }
 }, {passive:true});
 
+// ===== BURGER =====
 const burger = document.getElementById('burger');
 const mobileMenu = document.getElementById('mobileMenu');
 burger.addEventListener('click', () => {
@@ -922,12 +1023,14 @@ mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => 
   mobileMenu.classList.remove('open');
 }));
 
+// ===== REVEAL =====
 const revealEls = document.querySelectorAll('.reveal');
 const io = new IntersectionObserver((entries) => {
   entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
 }, {threshold:0.12});
 revealEls.forEach(el => io.observe(el));
 
+// ===== COUNTERS =====
 function animateCounter(el){
   const target = parseFloat(el.dataset.count);
   const decimal = parseInt(el.dataset.decimal || "0");
@@ -950,6 +1053,7 @@ const counterIO = new IntersectionObserver((entries) => {
 }, {threshold:0.5});
 counters.forEach(c => counterIO.observe(c));
 
+// ===== FAQ =====
 document.querySelectorAll('.faq-item').forEach(item => {
   const q = item.querySelector('.faq-q');
   const a = item.querySelector('.faq-a');
@@ -963,6 +1067,7 @@ document.querySelectorAll('.faq-item').forEach(item => {
   });
 });
 
+// ===== COUNTDOWN =====
 function nextSaturday18(){
   const now = new Date();
   const result = new Date(now);
@@ -990,6 +1095,7 @@ function updateCountdown(){
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
+// ===== TOAST =====
 function showToast(msg){
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -997,6 +1103,7 @@ function showToast(msg){
   setTimeout(()=> t.classList.remove('show'), 5500);
 }
 
+// ===== SEARCH FORM =====
 const FORM_ENDPOINT = 'https://formsubmit.co/ajax/contactyunoresell@gmail.com';
 
 const sfNetwork = document.getElementById('sf-network');
@@ -1022,21 +1129,10 @@ document.getElementById('searchForm').addEventListener('submit', async function(
   const submitBtn = this.querySelector('button[type="submit"]');
   const captchaError = document.getElementById('captchaError');
   const honeypot = document.getElementById('sf-website').value;
-
-  // Honeypot : si rempli, c'est un bot. On simule un succès sans rien envoyer.
-  if(honeypot){
-    this.reset();
-    grecaptcha.reset();
-    return;
-  }
-
+  if(honeypot){ this.reset(); grecaptcha.reset(); return; }
   const recaptchaResponse = grecaptcha.getResponse();
-  if(!recaptchaResponse){
-    captchaError.classList.add('show');
-    return;
-  }
+  if(!recaptchaResponse){ captchaError.classList.add('show'); return; }
   captchaError.classList.remove('show');
-
   const network = sfNetwork.value;
   const payload = {
     _subject: 'Nouvelle demande de recherche — yuno_resell',
@@ -1077,35 +1173,18 @@ document.getElementById('searchForm').addEventListener('submit', async function(
   }
 });
 
+// ===== MODAL =====
 const newsletterModal = document.getElementById('newsletterModal');
 const modalClose = document.getElementById('modalClose');
 const modalOkBtn = document.getElementById('modalOkBtn');
-
-function openNewsletterModal(){
-  newsletterModal.classList.add('show');
-  document.body.style.overflow = 'hidden';
-}
-function closeNewsletterModal(){
-  newsletterModal.classList.remove('show');
-  document.body.style.overflow = '';
-}
+function openNewsletterModal(){ newsletterModal.classList.add('show'); document.body.style.overflow = 'hidden'; }
+function closeNewsletterModal(){ newsletterModal.classList.remove('show'); document.body.style.overflow = ''; }
 modalClose.addEventListener('click', closeNewsletterModal);
 modalOkBtn.addEventListener('click', closeNewsletterModal);
-newsletterModal.addEventListener('click', (e) => {
-  if(e.target === newsletterModal) closeNewsletterModal();
-});
-document.addEventListener('keydown', (e) => {
-  if(e.key === 'Escape' && newsletterModal.classList.contains('show')) closeNewsletterModal();
-});
+newsletterModal.addEventListener('click', (e) => { if(e.target === newsletterModal) closeNewsletterModal(); });
+document.addEventListener('keydown', (e) => { if(e.key === 'Escape' && newsletterModal.classList.contains('show')) closeNewsletterModal(); });
 
-document.getElementById('newsletterForm').addEventListener('submit', function(e){
-  const form = this;
-  setTimeout(function(){
-    form.reset();
-    openNewsletterModal();
-  }, 700);
-});
-
+// ===== SMOOTH SCROLL =====
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', function(e){
     const id = this.getAttribute('href');
@@ -1114,6 +1193,185 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
       if(target){ e.preventDefault(); target.scrollIntoView({behavior:'smooth', block:'start'}); }
     }
   });
+});
+
+// ===== NEWSLETTER DOMAIN PICKER =====
+const DOMAINS = [
+  // Les plus utilisés en France
+  { domain: 'gmail.com',       label: 'Gmail',       tag: '★' },
+  { domain: 'outlook.fr',      label: 'Outlook FR',  tag: '★' },
+  { domain: 'hotmail.fr',      label: 'Hotmail FR',  tag: '★' },
+  { domain: 'yahoo.fr',        label: 'Yahoo FR',    tag: '★' },
+  { domain: 'icloud.com',      label: 'iCloud',      tag: '★' },
+  // Opérateurs français
+  { domain: 'orange.fr',       label: 'Orange' },
+  { domain: 'free.fr',         label: 'Free' },
+  { domain: 'sfr.fr',          label: 'SFR' },
+  { domain: 'wanadoo.fr',      label: 'Wanadoo' },
+  { domain: 'laposte.net',     label: 'La Poste' },
+  { domain: 'bbox.fr',         label: 'Bouygues Bbox' },
+  { domain: 'numericable.fr',  label: 'Numericable' },
+  { domain: 'neuf.fr',         label: 'Neuf Telecom' },
+  { domain: 'club-internet.fr',label: 'Club Internet' },
+  { domain: 'alice.fr',        label: 'Alice' },
+  { domain: 'cegetel.net',     label: 'Cegetel' },
+  { domain: 'tele2.fr',        label: 'Tele2' },
+  // Microsoft
+  { domain: 'outlook.com',     label: 'Outlook COM' },
+  { domain: 'hotmail.com',     label: 'Hotmail COM' },
+  { domain: 'live.fr',         label: 'Live FR' },
+  { domain: 'live.com',        label: 'Live COM' },
+  { domain: 'msn.com',         label: 'MSN' },
+  // Google
+  { domain: 'googlemail.com',  label: 'GoogleMail' },
+  // Yahoo
+  { domain: 'yahoo.com',       label: 'Yahoo COM' },
+  // Privacy / Pro
+  { domain: 'proton.me',       label: 'Proton' },
+  { domain: 'protonmail.com',  label: 'ProtonMail' },
+  { domain: 'tutanota.com',    label: 'Tutanota' },
+  // Autre
+  { domain: 'gmx.fr',          label: 'GMX FR' },
+  { domain: 'gmx.com',         label: 'GMX COM' },
+  { domain: 'me.com',          label: 'Apple Me' },
+  { domain: 'mac.com',         label: 'Apple Mac' },
+];
+
+let selectedDomain = 'gmail.com';
+const nlDomainBtn    = document.getElementById('nlDomainBtn');
+const nlDomainLabel  = document.getElementById('nlDomainLabel');
+const nlDomainDropdown = document.getElementById('nlDomainDropdown');
+const nlDomainSearch = document.getElementById('nlDomainSearch');
+const nlDomainList   = document.getElementById('nlDomainList');
+const nlUsername     = document.getElementById('nl-username');
+const nlPreview      = document.getElementById('nlPreview');
+
+function updatePreview(){
+  const user = nlUsername.value.trim();
+  if(user){
+    nlPreview.innerHTML = '<span>' + user + '@' + selectedDomain + '</span>';
+  } else {
+    nlPreview.innerHTML = '&nbsp;';
+  }
+}
+
+function renderDomains(filter){
+  filter = (filter || '').toLowerCase().trim();
+  const filtered = DOMAINS.filter(d =>
+    d.domain.includes(filter) ||
+    d.label.toLowerCase().includes(filter)
+  );
+
+  if(filtered.length === 0){
+    nlDomainList.innerHTML = '<div class="nl-domain-empty">Aucun résultat</div>';
+    return;
+  }
+
+  // Séparer les populaires des autres si pas de filtre actif
+  let html = '';
+  if(!filter){
+    const popular = filtered.filter(d => d.tag === '★');
+    const others  = filtered.filter(d => d.tag !== '★');
+    if(popular.length){
+      html += '<div class="nl-domain-separator">Les plus utilisés</div>';
+      html += popular.map(d => domainItemHTML(d)).join('');
+    }
+    if(others.length){
+      html += '<div class="nl-domain-separator">Tous les domaines</div>';
+      html += others.map(d => domainItemHTML(d)).join('');
+    }
+  } else {
+    html = filtered.map(d => domainItemHTML(d)).join('');
+  }
+
+  nlDomainList.innerHTML = html;
+  nlDomainList.querySelectorAll('.nl-domain-item').forEach(item => {
+    item.addEventListener('click', () => {
+      selectedDomain = item.dataset.domain;
+      nlDomainLabel.textContent = selectedDomain;
+      closeDropdown();
+      updatePreview();
+      nlUsername.focus();
+    });
+  });
+}
+
+function domainItemHTML(d){
+  const isSelected = d.domain === selectedDomain;
+  return `<div class="nl-domain-item${isSelected ? ' selected' : ''}" data-domain="${d.domain}" role="option" aria-selected="${isSelected}">
+    <span>${d.domain}</span>
+    <span class="nl-domain-tag">${d.label}</span>
+  </div>`;
+}
+
+function openDropdown(){
+  nlDomainDropdown.classList.add('open');
+  nlDomainBtn.classList.add('open');
+  nlDomainBtn.setAttribute('aria-expanded', 'true');
+  nlDomainSearch.value = '';
+  renderDomains('');
+  setTimeout(() => nlDomainSearch.focus(), 50);
+  // Scroll to selected
+  setTimeout(() => {
+    const sel = nlDomainList.querySelector('.selected');
+    if(sel) sel.scrollIntoView({block:'nearest'});
+  }, 80);
+}
+
+function closeDropdown(){
+  nlDomainDropdown.classList.remove('open');
+  nlDomainBtn.classList.remove('open');
+  nlDomainBtn.setAttribute('aria-expanded', 'false');
+}
+
+nlDomainBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  nlDomainDropdown.classList.contains('open') ? closeDropdown() : openDropdown();
+});
+
+nlDomainSearch.addEventListener('input', () => renderDomains(nlDomainSearch.value));
+
+// Keyboard nav inside dropdown
+nlDomainSearch.addEventListener('keydown', (e) => {
+  if(e.key === 'Escape'){ closeDropdown(); nlDomainBtn.focus(); }
+  if(e.key === 'ArrowDown'){
+    const first = nlDomainList.querySelector('.nl-domain-item');
+    if(first){ e.preventDefault(); first.focus(); }
+  }
+});
+nlDomainList.addEventListener('keydown', (e) => {
+  const items = [...nlDomainList.querySelectorAll('.nl-domain-item')];
+  const idx = items.indexOf(document.activeElement);
+  if(e.key === 'ArrowDown' && idx < items.length - 1){ e.preventDefault(); items[idx+1].focus(); }
+  if(e.key === 'ArrowUp'){ e.preventDefault(); idx > 0 ? items[idx-1].focus() : nlDomainSearch.focus(); }
+  if(e.key === 'Enter' && idx >= 0){ items[idx].click(); }
+  if(e.key === 'Escape'){ closeDropdown(); nlDomainBtn.focus(); }
+});
+nlDomainList.querySelectorAll('.nl-domain-item').forEach(i => i.setAttribute('tabindex', '0'));
+
+document.addEventListener('click', (e) => {
+  if(!nlDomainDropdown.contains(e.target) && e.target !== nlDomainBtn){
+    closeDropdown();
+  }
+});
+
+nlUsername.addEventListener('input', updatePreview);
+updatePreview();
+
+// Newsletter submit
+document.getElementById('newsletterForm').addEventListener('submit', function(e){
+  const username = nlUsername.value.trim();
+  if(!username){ e.preventDefault(); nlUsername.focus(); return; }
+  document.getElementById('nl-email').value = username + '@' + selectedDomain;
+  const form = this;
+  setTimeout(function(){
+    form.reset();
+    nlUsername.value = '';
+    nlDomainLabel.textContent = 'gmail.com';
+    selectedDomain = 'gmail.com';
+    nlPreview.innerHTML = '&nbsp;';
+    openNewsletterModal();
+  }, 700);
 });
 </script>
 </body>
