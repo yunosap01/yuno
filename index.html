@@ -262,169 +262,125 @@ section{padding:120px 0;position:relative;}
 .newsletter h2{font-size:clamp(30px,5vw,48px);color:var(--black);max-width:480px;}
 .newsletter p{font-family:var(--mono);font-size:13px;margin-top:14px;max-width:420px;}
 
-/* Email builder */
-.nl-form-wrap{display:flex;flex-direction:column;gap:10px;flex:1;min-width:320px;max-width:460px;}
+/* ===== NEWSLETTER EMAIL FORM ===== */
+.nl-form-wrap{display:flex;flex-direction:column;gap:12px;flex:1;min-width:300px;max-width:460px;}
 @media(max-width:500px){.nl-form-wrap{min-width:0;width:100%;}}
 
-.nl-email-builder{display:flex;align-items:stretch;border:2px solid var(--black);background:var(--black);height:52px;border-radius:var(--radius);overflow:hidden;}
-#nl-username{flex:1;padding:0 10px 0 16px;border:none;background:transparent;color:var(--cream);font-family:var(--mono);font-size:14px;min-width:0;outline:none;}
-#nl-username::placeholder{color:var(--taupe);}
-.nl-at{padding:0 8px;display:flex;align-items:center;color:var(--gold);font-family:var(--mono);font-size:16px;font-weight:700;flex-shrink:0;user-select:none;}
-.nl-domain-wrap{position:relative;flex-shrink:0;display:flex;align-items:stretch;}
-.nl-domain-btn{background:var(--card);color:var(--cream);border:none;border-left:1px solid var(--card-border);padding:0 14px;height:100%;font-family:var(--mono);font-size:12px;cursor:pointer;white-space:nowrap;font-weight:700;transition:background 0.2s,color 0.2s;display:flex;align-items:center;gap:7px;}
-.nl-domain-btn:hover{background:#252522;color:var(--gold);}
-.nl-domain-btn .nl-arrow{font-size:10px;transition:transform 0.2s;display:inline-block;color:var(--gold);}
-.nl-domain-btn.open .nl-arrow{transform:rotate(180deg);}
-.nl-domain-btn .nl-domain-label-text{color:var(--gold);}
-
-/* ===== DOMAIN DROPDOWN — compact, ~5 items visible ===== */
-.nl-domain-dropdown{
-  position:absolute;
-  top:calc(100% + 8px);
-  right:0;
-  background:var(--card);
-  border:1px solid var(--card-border);
-  width:260px;
-  z-index:9999;
-  box-shadow:0 16px 48px rgba(0,0,0,0.85);
-  display:none;
-  border-radius:4px;
-  overflow:hidden;
-}
-@media(max-width:700px){
-  .nl-domain-dropdown{
-    position:fixed;
-    top:auto;
-    bottom:0;
-    left:0;
-    right:0;
-    width:100%;
-    border-radius:12px 12px 0 0;
-    max-height:75vh;
-  }
-}
-.nl-domain-dropdown.open{display:flex;flex-direction:column;}
-
-/* Search bar at top */
-.nl-domain-search-wrap{
-  padding:10px 12px;
-  border-bottom:1px solid var(--card-border);
+/* Username input */
+.nl-username-field{
+  width:100%;
   background:var(--black);
-  flex-shrink:0;
-}
-.nl-domain-search-inner{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  background:var(--card);
-  border:1px solid var(--card-border);
-  border-radius:3px;
-  padding:0 10px;
-  transition:border-color 0.2s;
-}
-.nl-domain-search-inner:focus-within{border-color:var(--gold);}
-.nl-domain-search-icon{
-  color:var(--taupe);
-  font-size:13px;
-  flex-shrink:0;
-  pointer-events:none;
-}
-.nl-domain-search{
-  flex:1;
-  padding:9px 0;
-  background:transparent;
-  border:none;
+  border:1px solid rgba(0,0,0,0.35);
   color:var(--cream);
   font-family:var(--mono);
-  font-size:13px;
+  font-size:14px;
+  padding:14px 16px;
   outline:none;
+  transition:border-color 0.2s;
+  border-radius:var(--radius);
 }
-.nl-domain-search::placeholder{color:var(--taupe);font-size:12px;}
+.nl-username-field::placeholder{color:var(--taupe);}
+.nl-username-field:focus{border-color:rgba(0,0,0,0.6);}
 
-/* List — fixed height showing ~5 items (each ~44px) */
-.nl-domain-list{
-  overflow-y:auto;
-  flex:1;
-  min-height:0;
-  max-height:220px;
-}
-.nl-domain-list::-webkit-scrollbar{width:4px;}
-.nl-domain-list::-webkit-scrollbar-thumb{background:var(--card-border);border-radius:2px;}
-.nl-domain-list::-webkit-scrollbar-track{background:transparent;}
+/* Custom select wrapper */
+.nl-select-wrap{position:relative;width:100%;}
 
-.nl-domain-item{
-  padding:11px 16px;
+/* The trigger button — looks like the select in the screenshot */
+.nl-select-btn{
+  width:100%;
+  background:var(--black);
+  border:1px solid rgba(0,0,0,0.35);
+  color:var(--cream);
   font-family:var(--mono);
-  font-size:13px;
-  color:var(--cream-dim);
+  font-size:14px;
+  padding:14px 16px;
+  text-align:left;
   cursor:pointer;
-  transition:background 0.15s, color 0.15s;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:10px;
-  border-bottom:1px solid rgba(255,255,255,0.03);
+  border-radius:var(--radius);
+  transition:border-color 0.2s;
+  white-space:nowrap;
+  overflow:hidden;
 }
-.nl-domain-item:last-child{border-bottom:none;}
-.nl-domain-item:hover{background:rgba(201,168,118,0.08);color:var(--cream);}
-.nl-domain-item.selected{
-  background:rgba(201,168,118,0.1);
-  color:var(--gold);
-  font-weight:700;
-  border-left:3px solid var(--gold);
-  padding-left:13px;
-}
-.nl-domain-item .nl-domain-name{
-  font-weight:600;
-  font-size:13px;
-}
-.nl-domain-item .nl-domain-tag{
-  font-size:10px;
-  opacity:0.55;
-  font-weight:400;
+.nl-select-btn:hover{border-color:rgba(0,0,0,0.55);}
+.nl-select-btn.open{border-color:rgba(0,0,0,0.6);border-bottom-left-radius:0;border-bottom-right-radius:0;}
+.nl-select-chevron{
   flex-shrink:0;
-  color:var(--taupe);
-  background:rgba(255,255,255,0.05);
-  padding:2px 6px;
-  border-radius:2px;
+  width:18px;
+  height:18px;
+  opacity:0.6;
+  transition:transform 0.2s;
 }
-.nl-domain-item.selected .nl-domain-tag{
-  opacity:0.9;
-  color:var(--gold-bright);
-  background:rgba(201,168,118,0.12);
-}
-.nl-domain-item .nl-domain-check{
-  color:var(--gold);
-  font-size:12px;
-  opacity:0;
-  flex-shrink:0;
-}
-.nl-domain-item.selected .nl-domain-check{opacity:1;}
+.nl-select-btn.open .nl-select-chevron{transform:rotate(180deg);}
 
-.nl-domain-empty{
-  padding:28px 16px;
+/* Dropdown panel */
+.nl-select-dropdown{
+  position:absolute;
+  top:100%;
+  left:0;
+  right:0;
+  background:var(--black);
+  border:1px solid rgba(0,0,0,0.35);
+  border-top:none;
+  z-index:9999;
+  display:none;
+  flex-direction:column;
+  border-radius:0 0 var(--radius) var(--radius);
+  overflow:hidden;
+  box-shadow:0 8px 32px rgba(0,0,0,0.6);
+}
+.nl-select-dropdown.open{display:flex;}
+
+/* Search input inside dropdown */
+.nl-select-search{
+  width:100%;
+  background:var(--card);
+  border:none;
+  border-bottom:1px solid var(--card-border);
+  color:var(--cream);
   font-family:var(--mono);
-  font-size:12px;
+  font-size:13px;
+  padding:11px 16px;
+  outline:none;
+}
+.nl-select-search::placeholder{color:var(--taupe);}
+
+/* Options list */
+.nl-select-list{
+  overflow-y:auto;
+  max-height:220px;
+}
+.nl-select-list::-webkit-scrollbar{width:4px;}
+.nl-select-list::-webkit-scrollbar-thumb{background:var(--card-border);}
+.nl-select-list::-webkit-scrollbar-track{background:transparent;}
+
+.nl-select-option{
+  padding:11px 16px;
+  font-family:var(--mono);
+  font-size:14px;
+  color:var(--cream);
+  cursor:pointer;
+  transition:background 0.1s;
+}
+.nl-select-option:hover,.nl-select-option.focused{background:#3A3A36;}
+.nl-select-option.selected{background:#4A4A44;color:var(--cream);}
+
+.nl-select-empty{
+  padding:16px;
+  font-family:var(--mono);
+  font-size:13px;
   color:var(--taupe);
   text-align:center;
 }
-.nl-domain-separator{
-  padding:8px 16px 5px;
-  font-family:var(--mono);
-  font-size:10px;
-  color:var(--taupe);
-  text-transform:uppercase;
-  letter-spacing:0.12em;
-  background:var(--black-soft);
-  border-top:1px solid var(--card-border);
-  border-bottom:1px solid rgba(255,255,255,0.03);
-  position:sticky;
-  top:0;
-  z-index:1;
-}
-/* ===== END DOMAIN DROPDOWN ===== */
+
+/* Preview + submit */
+.nl-preview{font-family:var(--mono);font-size:11px;color:rgba(10,10,10,0.55);min-height:16px;letter-spacing:0.02em;}
+.nl-preview span{color:var(--black);font-weight:700;}
 
 .nl-submit-btn{
+  width:100%;
   background:var(--black);
   color:var(--gold);
   padding:15px 28px;
@@ -436,11 +392,9 @@ section{padding:120px 0;position:relative;}
   border:none;
   cursor:pointer;
   transition:background 0.2s, color 0.2s;
-  white-space:nowrap;
+  border-radius:var(--radius);
 }
-.nl-submit-btn:hover{background:#1a1a18;color:var(--gold-bright);}
-.nl-preview{font-family:var(--mono);font-size:11px;color:rgba(10,10,10,0.6);margin-top:4px;min-height:16px;letter-spacing:0.02em;}
-.nl-preview span{color:var(--black);font-weight:700;}
+.nl-submit-btn:hover{background:#111110;color:var(--gold-bright);}
 /* ===== END NEWSLETTER ===== */
 
 .contact-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--card-border);border:1px solid var(--card-border);}
@@ -969,30 +923,26 @@ footer{border-top:1px solid var(--card-border);padding:60px 0 30px;}
       </div>
 
       <form class="nl-form-wrap" id="newsletterForm" action="https://assets.mailerlite.com/jsonp/2460632/forms/190874427708147268/subscribe" method="post" target="ml_hidden_frame">
-        <!-- Email builder -->
-        <div class="nl-email-builder">
-          <input type="text" id="nl-username" placeholder="ton.prenom" autocomplete="off" required>
-          <span class="nl-at">@</span>
-          <div class="nl-domain-wrap">
-            <button type="button" class="nl-domain-btn" id="nlDomainBtn" aria-haspopup="listbox" aria-expanded="false">
-              <span id="nlDomainLabel" class="nl-domain-label-text">gmail.com</span>
-              <span class="nl-arrow">▾</span>
-            </button>
-            <div class="nl-domain-dropdown" id="nlDomainDropdown" role="listbox">
-              <div class="nl-domain-search-wrap">
-                <div class="nl-domain-search-inner">
-                  <span class="nl-domain-search-icon">🔍</span>
-                  <input type="text" class="nl-domain-search" id="nlDomainSearch" placeholder="Rechercher..." autocomplete="off" spellcheck="false">
-                </div>
-              </div>
-              <div class="nl-domain-list" id="nlDomainList"></div>
-            </div>
+
+        <!-- Username -->
+        <input type="text" id="nl-username" class="nl-username-field" placeholder="Ton prénom ou pseudo" autocomplete="off" required>
+
+        <!-- Domain select custom -->
+        <div class="nl-select-wrap" id="nlSelectWrap">
+          <button type="button" class="nl-select-btn" id="nlSelectBtn" aria-haspopup="listbox" aria-expanded="false">
+            <span id="nlSelectLabel">@gmail.com</span>
+            <svg class="nl-select-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="nl-select-dropdown" id="nlSelectDropdown" role="listbox">
+            <input type="text" class="nl-select-search" id="nlSelectSearch" placeholder="Rechercher un domaine..." autocomplete="off" spellcheck="false">
+            <div class="nl-select-list" id="nlSelectList"></div>
           </div>
         </div>
-        <!-- Preview live -->
+
+        <!-- Preview -->
         <div class="nl-preview" id="nlPreview">&nbsp;</div>
 
-        <!-- Hidden real email field for MailerLite -->
+        <!-- Hidden fields for MailerLite -->
         <input type="hidden" id="nl-email" name="fields[email]">
         <input type="hidden" name="ml-submit" value="1">
         <input type="hidden" name="anticsrf" value="true">
