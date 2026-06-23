@@ -277,21 +277,21 @@ section{padding:120px 0;position:relative;}
 .nl-domain-btn.open .nl-arrow{transform:rotate(180deg);}
 .nl-domain-btn .nl-domain-label-text{color:var(--gold);}
 
-/* === DOMAIN DROPDOWN — FIXED & ENLARGED === */
+/* ===== DOMAIN DROPDOWN — REDESIGNED LARGE ===== */
 .nl-domain-dropdown{
   position:absolute;
-  top:calc(100% + 10px);
+  top:calc(100% + 8px);
   right:0;
   background:var(--card);
   border:1px solid var(--card-border);
-  width:340px;
+  width:420px;
   z-index:9999;
-  box-shadow:0 20px 60px rgba(0,0,0,0.8);
+  box-shadow:0 24px 64px rgba(0,0,0,0.85);
   display:none;
-  border-radius:var(--radius);
+  border-radius:4px;
   overflow:hidden;
 }
-@media(max-width:600px){
+@media(max-width:700px){
   .nl-domain-dropdown{
     position:fixed;
     top:auto;
@@ -299,43 +299,61 @@ section{padding:120px 0;position:relative;}
     left:0;
     right:0;
     width:100%;
-    border-radius:8px 8px 0 0;
-    max-height:70vh;
-    display:none;
+    border-radius:12px 12px 0 0;
+    max-height:75vh;
   }
 }
-.nl-domain-dropdown.open{display:block;}
+.nl-domain-dropdown.open{display:flex;flex-direction:column;}
 
+/* Search bar at top */
 .nl-domain-search-wrap{
-  padding:14px 16px;
+  padding:16px;
   border-bottom:1px solid var(--card-border);
-  background:var(--black-soft);
+  background:var(--black);
+  flex-shrink:0;
+}
+.nl-domain-search-inner{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:var(--card);
+  border:1px solid var(--card-border);
+  border-radius:3px;
+  padding:0 14px;
+  transition:border-color 0.2s;
+}
+.nl-domain-search-inner:focus-within{border-color:var(--gold);}
+.nl-domain-search-icon{
+  color:var(--taupe);
+  font-size:15px;
+  flex-shrink:0;
+  pointer-events:none;
 }
 .nl-domain-search{
-  width:100%;
-  padding:12px 16px;
-  background:var(--black);
-  border:1px solid var(--card-border);
+  flex:1;
+  padding:12px 0;
+  background:transparent;
+  border:none;
   color:var(--cream);
   font-family:var(--mono);
-  font-size:15px;
+  font-size:14px;
   outline:none;
-  transition:border-color 0.2s;
-  border-radius:var(--radius);
 }
-.nl-domain-search:focus{border-color:var(--gold);}
-.nl-domain-search::placeholder{color:var(--taupe);font-size:14px;}
+.nl-domain-search::placeholder{color:var(--taupe);font-size:13px;}
 
+/* List */
 .nl-domain-list{
-  max-height:320px;
   overflow-y:auto;
+  flex:1;
+  min-height:0;
+  max-height:360px;
 }
 .nl-domain-list::-webkit-scrollbar{width:5px;}
 .nl-domain-list::-webkit-scrollbar-thumb{background:var(--card-border);border-radius:3px;}
 .nl-domain-list::-webkit-scrollbar-track{background:transparent;}
 
 .nl-domain-item{
-  padding:14px 20px;
+  padding:13px 20px;
   font-family:var(--mono);
   font-size:14px;
   color:var(--cream-dim);
@@ -344,41 +362,67 @@ section{padding:120px 0;position:relative;}
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:12px;
+  gap:16px;
+  border-bottom:1px solid rgba(255,255,255,0.03);
 }
-.nl-domain-item:hover{background:rgba(201,168,118,0.1);color:var(--cream);}
+.nl-domain-item:last-child{border-bottom:none;}
+.nl-domain-item:hover{background:rgba(201,168,118,0.08);color:var(--cream);}
 .nl-domain-item.selected{
-  background:rgba(201,168,118,0.08);
+  background:rgba(201,168,118,0.1);
   color:var(--gold);
   font-weight:700;
   border-left:3px solid var(--gold);
+  padding-left:17px;
+}
+.nl-domain-item .nl-domain-name{
+  font-weight:600;
+  font-size:14px;
 }
 .nl-domain-item .nl-domain-tag{
-  font-size:12px;
+  font-size:11px;
   opacity:0.55;
   font-weight:400;
   flex-shrink:0;
   color:var(--taupe);
+  background:rgba(255,255,255,0.05);
+  padding:3px 8px;
+  border-radius:2px;
 }
-.nl-domain-item.selected .nl-domain-tag{opacity:0.8;color:var(--gold-bright);}
-.nl-domain-empty{
-  padding:28px 20px;
-  font-family:var(--mono);
+.nl-domain-item.selected .nl-domain-tag{
+  opacity:0.9;
+  color:var(--gold-bright);
+  background:rgba(201,168,118,0.12);
+}
+.nl-domain-item .nl-domain-check{
+  color:var(--gold);
   font-size:14px;
+  opacity:0;
+  flex-shrink:0;
+}
+.nl-domain-item.selected .nl-domain-check{opacity:1;}
+
+.nl-domain-empty{
+  padding:36px 20px;
+  font-family:var(--mono);
+  font-size:13px;
   color:var(--taupe);
   text-align:center;
 }
 .nl-domain-separator{
-  padding:8px 20px;
+  padding:10px 20px 6px;
   font-family:var(--mono);
-  font-size:11px;
+  font-size:10px;
   color:var(--taupe);
   text-transform:uppercase;
-  letter-spacing:0.1em;
+  letter-spacing:0.12em;
   background:var(--black-soft);
   border-top:1px solid var(--card-border);
+  border-bottom:1px solid rgba(255,255,255,0.03);
+  position:sticky;
+  top:0;
+  z-index:1;
 }
-/* === END DOMAIN DROPDOWN FIX === */
+/* ===== END DOMAIN DROPDOWN ===== */
 
 .nl-submit-btn{
   background:var(--black);
@@ -936,7 +980,10 @@ footer{border-top:1px solid var(--card-border);padding:60px 0 30px;}
             </button>
             <div class="nl-domain-dropdown" id="nlDomainDropdown" role="listbox">
               <div class="nl-domain-search-wrap">
-                <input type="text" class="nl-domain-search" id="nlDomainSearch" placeholder="🔍 Rechercher un domaine..." autocomplete="off" spellcheck="false">
+                <div class="nl-domain-search-inner">
+                  <span class="nl-domain-search-icon">🔍</span>
+                  <input type="text" class="nl-domain-search" id="nlDomainSearch" placeholder="Rechercher un domaine..." autocomplete="off" spellcheck="false">
+                </div>
               </div>
               <div class="nl-domain-list" id="nlDomainList"></div>
             </div>
@@ -1254,11 +1301,11 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 
 // ===== NEWSLETTER DOMAIN PICKER =====
 const DOMAINS = [
-  { domain: 'gmail.com',       label: 'Gmail',       tag: '★' },
-  { domain: 'outlook.fr',      label: 'Outlook FR',  tag: '★' },
-  { domain: 'hotmail.fr',      label: 'Hotmail FR',  tag: '★' },
-  { domain: 'yahoo.fr',        label: 'Yahoo FR',    tag: '★' },
-  { domain: 'icloud.com',      label: 'iCloud',      tag: '★' },
+  { domain: 'gmail.com',       label: 'Gmail',           tag: 'Populaire' },
+  { domain: 'outlook.fr',      label: 'Outlook FR',      tag: 'Populaire' },
+  { domain: 'hotmail.fr',      label: 'Hotmail FR',      tag: 'Populaire' },
+  { domain: 'yahoo.fr',        label: 'Yahoo FR',        tag: 'Populaire' },
+  { domain: 'icloud.com',      label: 'iCloud',          tag: 'Populaire' },
   { domain: 'orange.fr',       label: 'Orange' },
   { domain: 'free.fr',         label: 'Free' },
   { domain: 'sfr.fr',          label: 'SFR' },
@@ -1288,13 +1335,13 @@ const DOMAINS = [
 ];
 
 let selectedDomain = 'gmail.com';
-const nlDomainBtn    = document.getElementById('nlDomainBtn');
-const nlDomainLabel  = document.getElementById('nlDomainLabel');
+const nlDomainBtn      = document.getElementById('nlDomainBtn');
+const nlDomainLabel    = document.getElementById('nlDomainLabel');
 const nlDomainDropdown = document.getElementById('nlDomainDropdown');
-const nlDomainSearch = document.getElementById('nlDomainSearch');
-const nlDomainList   = document.getElementById('nlDomainList');
-const nlUsername     = document.getElementById('nl-username');
-const nlPreview      = document.getElementById('nlPreview');
+const nlDomainSearch   = document.getElementById('nlDomainSearch');
+const nlDomainList     = document.getElementById('nlDomainList');
+const nlUsername       = document.getElementById('nl-username');
+const nlPreview        = document.getElementById('nlPreview');
 
 function updatePreview(){
   const user = nlUsername.value.trim();
@@ -1313,14 +1360,14 @@ function renderDomains(filter){
   );
 
   if(filtered.length === 0){
-    nlDomainList.innerHTML = '<div class="nl-domain-empty">Aucun résultat</div>';
+    nlDomainList.innerHTML = '<div class="nl-domain-empty">Aucun résultat pour "' + filter + '"</div>';
     return;
   }
 
   let html = '';
   if(!filter){
-    const popular = filtered.filter(d => d.tag === '★');
-    const others  = filtered.filter(d => d.tag !== '★');
+    const popular = filtered.filter(d => d.tag === 'Populaire');
+    const others  = filtered.filter(d => d.tag !== 'Populaire');
     if(popular.length){
       html += '<div class="nl-domain-separator">Les plus utilisés</div>';
       html += popular.map(d => domainItemHTML(d)).join('');
@@ -1348,8 +1395,11 @@ function renderDomains(filter){
 function domainItemHTML(d){
   const isSelected = d.domain === selectedDomain;
   return `<div class="nl-domain-item${isSelected ? ' selected' : ''}" data-domain="${d.domain}" role="option" aria-selected="${isSelected}" tabindex="0">
-    <span>${d.domain}</span>
-    <span class="nl-domain-tag">${d.label}</span>
+    <span class="nl-domain-name">${d.domain}</span>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <span class="nl-domain-tag">${d.label}${d.tag === 'Populaire' ? ' ★' : ''}</span>
+      <span class="nl-domain-check">✓</span>
+    </div>
   </div>`;
 }
 
