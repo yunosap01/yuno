@@ -466,6 +466,22 @@ footer{border-top:1px solid var(--card-border);padding:60px 0 30px;}
 .modal-x{position:absolute;top:16px;right:16px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;color:var(--taupe);font-size:20px;line-height:1;transition:color 0.2s;z-index:2;}
 .modal-x:hover{color:var(--cream);}
 
+/* Confirmation email modal — boutons côte à côte */
+.modal-confirm-actions{display:flex;gap:12px;margin-top:26px;}
+.modal-confirm-actions .btn{flex:1;}
+.modal-confirm-email{
+  font-family:var(--mono);
+  font-size:16px;
+  font-weight:700;
+  color:var(--gold);
+  word-break:break-all;
+  background:rgba(201,168,118,0.08);
+  border:1px solid var(--card-border);
+  padding:10px 14px;
+  margin-top:6px;
+  border-radius:var(--radius);
+}
+
 .captcha-error{display:none;color:var(--red);font-family:var(--mono);font-size:12px;margin-top:8px;}
 .captcha-error.show{display:block;}
 .hp-field{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;opacity:0;}
@@ -1054,6 +1070,28 @@ footer{border-top:1px solid var(--card-border);padding:60px 0 30px;}
 
 <div class="toast" id="toast"></div>
 
+<!-- ===== MODAL DE CONFIRMATION D'EMAIL (avant inscription) ===== -->
+<div class="modal-overlay" id="confirmEmailModal">
+  <div class="modal-box">
+    <button class="modal-x" id="confirmModalClose" aria-label="Fermer">✕</button>
+    <div class="modal-icon-wrap">
+      <div class="modal-icon">
+        <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+      </div>
+    </div>
+    <div class="modal-content">
+      <h3>Confirme ton email</h3>
+      <p>Tu vas t'inscrire avec cette adresse :</p>
+      <div class="modal-confirm-email" id="confirmEmailText"></div>
+      <p class="modal-sub">Vérifie qu'il n'y a pas de faute de frappe — c'est cette adresse qui recevra les drops.</p>
+      <div class="modal-confirm-actions">
+        <button class="btn btn-outline" id="confirmEmailNo">Non, modifier</button>
+        <button class="btn btn-primary" id="confirmEmailYes">Oui, c'est bon</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="newsletterModal">
   <div class="modal-box">
     <button class="modal-x" id="modalClose" aria-label="Fermer">✕</button>
@@ -1247,7 +1285,7 @@ document.getElementById('searchForm').addEventListener('submit', async function(
   }
 });
 
-// ===== MODAL =====
+// ===== MODAL "PRESQUE FINI" =====
 const newsletterModal = document.getElementById('newsletterModal');
 const modalClose = document.getElementById('modalClose');
 const modalOkBtn = document.getElementById('modalOkBtn');
@@ -1425,11 +1463,55 @@ document.addEventListener('click', (e) => {
 nlUsername.addEventListener('input', updatePreview);
 updatePreview();
 
-// Newsletter submit
-document.getElementById('newsletterForm').addEventListener('submit', function(e){
+// ===== MODAL DE CONFIRMATION D'EMAIL =====
+const confirmEmailModal = document.getElementById('confirmEmailModal');
+const confirmEmailText  = document.getElementById('confirmEmailText');
+const confirmEmailYes   = document.getElementById('confirmEmailYes');
+const confirmEmailNo    = document.getElementById('confirmEmailNo');
+const confirmModalClose = document.getElementById('confirmModalClose');
+const newsletterFormEl  = document.getElementById('newsletterForm');
+
+let nlConfirmed = false; // passe à true uniquement après clic sur "Oui, c'est bon"
+
+function openConfirmModal(){ confirmEmailModal.classList.add('show'); document.body.style.overflow = 'hidden'; }
+function closeConfirmModal(){ confirmEmailModal.classList.remove('show'); document.body.style.overflow = ''; }
+
+confirmModalClose.addEventListener('click', closeConfirmModal);
+confirmEmailModal.addEventListener('click', (e) => { if(e.target === confirmEmailModal) closeConfirmModal(); });
+document.addEventListener('keydown', (e) => { if(e.key === 'Escape' && confirmEmailModal.classList.contains('show')) closeConfirmModal(); });
+
+// Clic "Non, modifier" -> on ferme et on remet le focus sur le champ pour correction
+confirmEmailNo.addEventListener('click', () => {
+  closeConfirmModal();
+  nlUsername.focus();
+  nlUsername.select();
+});
+
+// Clic "Oui, c'est bon" -> on marque comme confirmé et on relance le submit (cette fois il passera)
+confirmEmailYes.addEventListener('click', () => {
+  nlConfirmed = true;
+  closeConfirmModal();
+  newsletterFormEl.requestSubmit();
+});
+
+// Newsletter submit — intercepté pour afficher la confirmation avant l'envoi réel
+newsletterFormEl.addEventListener('submit', function(e){
   const username = nlUsername.value.trim();
   if(!username){ e.preventDefault(); nlUsername.focus(); return; }
-  document.getElementById('nl-email').value = username + '@' + selectedDomain;
+
+  const fullEmail = username + '@' + selectedDomain;
+  document.getElementById('nl-email').value = fullEmail;
+
+  // Première tentative : on bloque l'envoi et on demande confirmation
+  if(!nlConfirmed){
+    e.preventDefault();
+    confirmEmailText.textContent = fullEmail;
+    openConfirmModal();
+    return;
+  }
+
+  // Deuxième tentative (après clic "Oui") : on laisse partir l'envoi réel vers l'iframe caché,
+  // puis on réinitialise le formulaire et on affiche "Presque fini !"
   const form = this;
   setTimeout(function(){
     form.reset();
@@ -1437,6 +1519,7 @@ document.getElementById('newsletterForm').addEventListener('submit', function(e)
     nlSelectLabel.textContent = '@gmail.com';
     selectedDomain = 'gmail.com';
     nlPreview.innerHTML = '&nbsp;';
+    nlConfirmed = false; // reset pour une éventuelle prochaine inscription
     openNewsletterModal();
   }, 700);
 });
