@@ -277,52 +277,108 @@ section{padding:120px 0;position:relative;}
 .nl-domain-btn.open .nl-arrow{transform:rotate(180deg);}
 .nl-domain-btn .nl-domain-label-text{color:var(--gold);}
 
+/* === DOMAIN DROPDOWN — FIXED & ENLARGED === */
 .nl-domain-dropdown{
   position:absolute;
-  top:calc(100% + 8px);
+  top:calc(100% + 10px);
   right:0;
   background:var(--card);
   border:1px solid var(--card-border);
-  width:240px;
+  width:340px;
   z-index:9999;
-  box-shadow:0 12px 40px rgba(0,0,0,0.6);
+  box-shadow:0 20px 60px rgba(0,0,0,0.8);
   display:none;
+  border-radius:var(--radius);
+  overflow:hidden;
+}
+@media(max-width:600px){
+  .nl-domain-dropdown{
+    position:fixed;
+    top:auto;
+    bottom:0;
+    left:0;
+    right:0;
+    width:100%;
+    border-radius:8px 8px 0 0;
+    max-height:70vh;
+    display:none;
+  }
 }
 .nl-domain-dropdown.open{display:block;}
-.nl-domain-search-wrap{padding:10px 12px;border-bottom:1px solid var(--card-border);background:var(--black);}
+
+.nl-domain-search-wrap{
+  padding:14px 16px;
+  border-bottom:1px solid var(--card-border);
+  background:var(--black-soft);
+}
 .nl-domain-search{
   width:100%;
-  padding:8px 12px;
-  background:var(--card);
+  padding:12px 16px;
+  background:var(--black);
   border:1px solid var(--card-border);
   color:var(--cream);
   font-family:var(--mono);
-  font-size:12px;
+  font-size:15px;
   outline:none;
   transition:border-color 0.2s;
+  border-radius:var(--radius);
 }
 .nl-domain-search:focus{border-color:var(--gold);}
-.nl-domain-search::placeholder{color:var(--taupe);}
-.nl-domain-list{max-height:220px;overflow-y:auto;}
-.nl-domain-list::-webkit-scrollbar{width:4px;}
-.nl-domain-list::-webkit-scrollbar-thumb{background:var(--card-border);}
+.nl-domain-search::placeholder{color:var(--taupe);font-size:14px;}
+
+.nl-domain-list{
+  max-height:320px;
+  overflow-y:auto;
+}
+.nl-domain-list::-webkit-scrollbar{width:5px;}
+.nl-domain-list::-webkit-scrollbar-thumb{background:var(--card-border);border-radius:3px;}
+.nl-domain-list::-webkit-scrollbar-track{background:transparent;}
+
 .nl-domain-item{
-  padding:11px 16px;
+  padding:14px 20px;
   font-family:var(--mono);
-  font-size:12px;
+  font-size:14px;
   color:var(--cream-dim);
   cursor:pointer;
   transition:background 0.15s, color 0.15s;
   display:flex;
   justify-content:space-between;
   align-items:center;
+  gap:12px;
 }
 .nl-domain-item:hover{background:rgba(201,168,118,0.1);color:var(--cream);}
-.nl-domain-item.selected{background:var(--black);color:var(--gold);font-weight:700;border-left:3px solid var(--gold);}
-.nl-domain-item .nl-domain-tag{font-size:10px;opacity:0.55;font-weight:400;}
+.nl-domain-item.selected{
+  background:rgba(201,168,118,0.08);
+  color:var(--gold);
+  font-weight:700;
+  border-left:3px solid var(--gold);
+}
+.nl-domain-item .nl-domain-tag{
+  font-size:12px;
+  opacity:0.55;
+  font-weight:400;
+  flex-shrink:0;
+  color:var(--taupe);
+}
 .nl-domain-item.selected .nl-domain-tag{opacity:0.8;color:var(--gold-bright);}
-.nl-domain-empty{padding:18px 16px;font-family:var(--mono);font-size:12px;color:var(--taupe);text-align:center;}
-.nl-domain-separator{padding:6px 16px;font-family:var(--mono);font-size:10px;color:var(--taupe);text-transform:uppercase;letter-spacing:0.08em;background:var(--black-soft);border-top:1px solid var(--card-border);}
+.nl-domain-empty{
+  padding:28px 20px;
+  font-family:var(--mono);
+  font-size:14px;
+  color:var(--taupe);
+  text-align:center;
+}
+.nl-domain-separator{
+  padding:8px 20px;
+  font-family:var(--mono);
+  font-size:11px;
+  color:var(--taupe);
+  text-transform:uppercase;
+  letter-spacing:0.1em;
+  background:var(--black-soft);
+  border-top:1px solid var(--card-border);
+}
+/* === END DOMAIN DROPDOWN FIX === */
 
 .nl-submit-btn{
   background:var(--black);
@@ -880,7 +936,7 @@ footer{border-top:1px solid var(--card-border);padding:60px 0 30px;}
             </button>
             <div class="nl-domain-dropdown" id="nlDomainDropdown" role="listbox">
               <div class="nl-domain-search-wrap">
-                <input type="text" class="nl-domain-search" id="nlDomainSearch" placeholder="Rechercher un domaine..." autocomplete="off" spellcheck="false">
+                <input type="text" class="nl-domain-search" id="nlDomainSearch" placeholder="🔍 Rechercher un domaine..." autocomplete="off" spellcheck="false">
               </div>
               <div class="nl-domain-list" id="nlDomainList"></div>
             </div>
@@ -1198,13 +1254,11 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 
 // ===== NEWSLETTER DOMAIN PICKER =====
 const DOMAINS = [
-  // Les plus utilisés en France
   { domain: 'gmail.com',       label: 'Gmail',       tag: '★' },
   { domain: 'outlook.fr',      label: 'Outlook FR',  tag: '★' },
   { domain: 'hotmail.fr',      label: 'Hotmail FR',  tag: '★' },
   { domain: 'yahoo.fr',        label: 'Yahoo FR',    tag: '★' },
   { domain: 'icloud.com',      label: 'iCloud',      tag: '★' },
-  // Opérateurs français
   { domain: 'orange.fr',       label: 'Orange' },
   { domain: 'free.fr',         label: 'Free' },
   { domain: 'sfr.fr',          label: 'SFR' },
@@ -1217,21 +1271,16 @@ const DOMAINS = [
   { domain: 'alice.fr',        label: 'Alice' },
   { domain: 'cegetel.net',     label: 'Cegetel' },
   { domain: 'tele2.fr',        label: 'Tele2' },
-  // Microsoft
   { domain: 'outlook.com',     label: 'Outlook COM' },
   { domain: 'hotmail.com',     label: 'Hotmail COM' },
   { domain: 'live.fr',         label: 'Live FR' },
   { domain: 'live.com',        label: 'Live COM' },
   { domain: 'msn.com',         label: 'MSN' },
-  // Google
   { domain: 'googlemail.com',  label: 'GoogleMail' },
-  // Yahoo
   { domain: 'yahoo.com',       label: 'Yahoo COM' },
-  // Privacy / Pro
   { domain: 'proton.me',       label: 'Proton' },
   { domain: 'protonmail.com',  label: 'ProtonMail' },
   { domain: 'tutanota.com',    label: 'Tutanota' },
-  // Autre
   { domain: 'gmx.fr',          label: 'GMX FR' },
   { domain: 'gmx.com',         label: 'GMX COM' },
   { domain: 'me.com',          label: 'Apple Me' },
@@ -1268,7 +1317,6 @@ function renderDomains(filter){
     return;
   }
 
-  // Séparer les populaires des autres si pas de filtre actif
   let html = '';
   if(!filter){
     const popular = filtered.filter(d => d.tag === '★');
@@ -1299,7 +1347,7 @@ function renderDomains(filter){
 
 function domainItemHTML(d){
   const isSelected = d.domain === selectedDomain;
-  return `<div class="nl-domain-item${isSelected ? ' selected' : ''}" data-domain="${d.domain}" role="option" aria-selected="${isSelected}">
+  return `<div class="nl-domain-item${isSelected ? ' selected' : ''}" data-domain="${d.domain}" role="option" aria-selected="${isSelected}" tabindex="0">
     <span>${d.domain}</span>
     <span class="nl-domain-tag">${d.label}</span>
   </div>`;
@@ -1312,7 +1360,6 @@ function openDropdown(){
   nlDomainSearch.value = '';
   renderDomains('');
   setTimeout(() => nlDomainSearch.focus(), 50);
-  // Scroll to selected
   setTimeout(() => {
     const sel = nlDomainList.querySelector('.selected');
     if(sel) sel.scrollIntoView({block:'nearest'});
@@ -1332,7 +1379,6 @@ nlDomainBtn.addEventListener('click', (e) => {
 
 nlDomainSearch.addEventListener('input', () => renderDomains(nlDomainSearch.value));
 
-// Keyboard nav inside dropdown
 nlDomainSearch.addEventListener('keydown', (e) => {
   if(e.key === 'Escape'){ closeDropdown(); nlDomainBtn.focus(); }
   if(e.key === 'ArrowDown'){
@@ -1348,7 +1394,6 @@ nlDomainList.addEventListener('keydown', (e) => {
   if(e.key === 'Enter' && idx >= 0){ items[idx].click(); }
   if(e.key === 'Escape'){ closeDropdown(); nlDomainBtn.focus(); }
 });
-nlDomainList.querySelectorAll('.nl-domain-item').forEach(i => i.setAttribute('tabindex', '0'));
 
 document.addEventListener('click', (e) => {
   if(!nlDomainDropdown.contains(e.target) && e.target !== nlDomainBtn){
