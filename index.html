@@ -5,16 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>yuno_resell — Pièces authentifiées, streetwear sélectionné</title>
 <meta name="description" content="yuno_resell : revente de vêtements authentifiés. +300 ventes, 12K abonnés TikTok. Ralph Lauren, maillots de foot, jeans et pièces rares vérifiées pièce par pièce.">
-
 <meta property="og:title" content="yuno_resell — Vêtements authentifiés">
 <meta property="og:description" content="Plus de 300 ventes vérifiées. Chaque pièce contrôlée avant envoi. Rejoins 12K abonnés qui suivent les drops.">
 <meta property="og:type" content="website">
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-
 <style>
 :root{
   --black:#0A0A0A;
@@ -266,7 +263,6 @@ section{padding:120px 0;position:relative;}
 .nl-form-wrap{display:flex;flex-direction:column;gap:12px;flex:1;min-width:300px;max-width:460px;}
 @media(max-width:500px){.nl-form-wrap{min-width:0;width:100%;}}
 
-/* Username input */
 .nl-username-field{
   width:100%;
   background:var(--black);
@@ -285,7 +281,6 @@ section{padding:120px 0;position:relative;}
 /* Custom select wrapper */
 .nl-select-wrap{position:relative;width:100%;}
 
-/* The trigger button — looks like the select in the screenshot */
 .nl-select-btn{
   width:100%;
   background:var(--black);
@@ -350,11 +345,23 @@ section{padding:120px 0;position:relative;}
 /* Options list */
 .nl-select-list{
   overflow-y:auto;
-  max-height:220px;
+  max-height:240px;
 }
 .nl-select-list::-webkit-scrollbar{width:4px;}
 .nl-select-list::-webkit-scrollbar-thumb{background:var(--card-border);}
 .nl-select-list::-webkit-scrollbar-track{background:transparent;}
+
+/* Separator */
+.nl-select-separator{
+  padding:8px 16px 4px;
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--taupe);
+  background:var(--card);
+  border-bottom:1px solid var(--card-border);
+}
 
 .nl-select-option{
   padding:11px 16px;
@@ -363,9 +370,23 @@ section{padding:120px 0;position:relative;}
   color:var(--cream);
   cursor:pointer;
   transition:background 0.1s;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
-.nl-select-option:hover,.nl-select-option.focused{background:#3A3A36;}
-.nl-select-option.selected{background:#4A4A44;color:var(--cream);}
+.nl-select-option:hover,.nl-select-option.focused{background:#2A2A26;}
+.nl-select-option.selected{background:#3A3A36;color:var(--gold);}
+.nl-select-option-check{
+  font-size:12px;
+  color:var(--gold);
+  opacity:0;
+}
+.nl-select-option.selected .nl-select-option-check{opacity:1;}
+.nl-select-option-tag{
+  font-size:10px;
+  color:var(--taupe);
+}
+.nl-select-option.selected .nl-select-option-tag{color:var(--gold);opacity:0.7;}
 
 .nl-select-empty{
   padding:16px;
@@ -395,7 +416,6 @@ section{padding:120px 0;position:relative;}
   border-radius:var(--radius);
 }
 .nl-submit-btn:hover{background:#111110;color:var(--gold-bright);}
-/* ===== END NEWSLETTER ===== */
 
 .contact-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--card-border);border:1px solid var(--card-border);}
 @media (max-width:900px){.contact-grid{grid-template-columns:repeat(2,1fr);}}
@@ -927,7 +947,7 @@ footer{border-top:1px solid var(--card-border);padding:60px 0 30px;}
         <!-- Username -->
         <input type="text" id="nl-username" class="nl-username-field" placeholder="Ton prénom ou pseudo" autocomplete="off" required>
 
-        <!-- Domain select custom -->
+        <!-- Domain select custom — IDs unified as nlSelect* -->
         <div class="nl-select-wrap" id="nlSelectWrap">
           <button type="button" class="nl-select-btn" id="nlSelectBtn" aria-haspopup="listbox" aria-expanded="false">
             <span id="nlSelectLabel">@gmail.com</span>
@@ -1250,153 +1270,154 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 });
 
 // ===== NEWSLETTER DOMAIN PICKER =====
+// All IDs match the HTML: nlSelectBtn, nlSelectDropdown, nlSelectSearch, nlSelectList, nlSelectLabel
 const DOMAINS = [
-  { domain: 'gmail.com',       label: 'Gmail',           tag: 'Populaire' },
-  { domain: 'outlook.fr',      label: 'Outlook FR',      tag: 'Populaire' },
-  { domain: 'hotmail.fr',      label: 'Hotmail FR',      tag: 'Populaire' },
-  { domain: 'yahoo.fr',        label: 'Yahoo FR',        tag: 'Populaire' },
-  { domain: 'icloud.com',      label: 'iCloud',          tag: 'Populaire' },
-  { domain: 'orange.fr',       label: 'Orange' },
-  { domain: 'free.fr',         label: 'Free' },
-  { domain: 'sfr.fr',          label: 'SFR' },
-  { domain: 'wanadoo.fr',      label: 'Wanadoo' },
-  { domain: 'laposte.net',     label: 'La Poste' },
-  { domain: 'bbox.fr',         label: 'Bouygues Bbox' },
-  { domain: 'numericable.fr',  label: 'Numericable' },
-  { domain: 'neuf.fr',         label: 'Neuf Telecom' },
-  { domain: 'club-internet.fr',label: 'Club Internet' },
-  { domain: 'alice.fr',        label: 'Alice' },
-  { domain: 'cegetel.net',     label: 'Cegetel' },
-  { domain: 'tele2.fr',        label: 'Tele2' },
-  { domain: 'outlook.com',     label: 'Outlook COM' },
-  { domain: 'hotmail.com',     label: 'Hotmail COM' },
-  { domain: 'live.fr',         label: 'Live FR' },
-  { domain: 'live.com',        label: 'Live COM' },
-  { domain: 'msn.com',         label: 'MSN' },
-  { domain: 'googlemail.com',  label: 'GoogleMail' },
-  { domain: 'yahoo.com',       label: 'Yahoo COM' },
-  { domain: 'proton.me',       label: 'Proton' },
-  { domain: 'protonmail.com',  label: 'ProtonMail' },
-  { domain: 'tutanota.com',    label: 'Tutanota' },
-  { domain: 'gmx.fr',          label: 'GMX FR' },
-  { domain: 'gmx.com',         label: 'GMX COM' },
-  { domain: 'me.com',          label: 'Apple Me' },
-  { domain: 'mac.com',         label: 'Apple Mac' },
+  { domain: 'gmail.com',        label: 'Gmail',           popular: true },
+  { domain: 'outlook.fr',       label: 'Outlook FR',      popular: true },
+  { domain: 'hotmail.fr',       label: 'Hotmail FR',      popular: true },
+  { domain: 'yahoo.fr',         label: 'Yahoo FR',        popular: true },
+  { domain: 'icloud.com',       label: 'iCloud',          popular: true },
+  { domain: 'orange.fr',        label: 'Orange',          popular: false },
+  { domain: 'free.fr',          label: 'Free',            popular: false },
+  { domain: 'sfr.fr',           label: 'SFR',             popular: false },
+  { domain: 'wanadoo.fr',       label: 'Wanadoo',         popular: false },
+  { domain: 'laposte.net',      label: 'La Poste',        popular: false },
+  { domain: 'bbox.fr',          label: 'Bouygues Bbox',   popular: false },
+  { domain: 'numericable.fr',   label: 'Numericable',     popular: false },
+  { domain: 'neuf.fr',          label: 'Neuf Telecom',    popular: false },
+  { domain: 'club-internet.fr', label: 'Club Internet',   popular: false },
+  { domain: 'alice.fr',         label: 'Alice',           popular: false },
+  { domain: 'cegetel.net',      label: 'Cegetel',         popular: false },
+  { domain: 'tele2.fr',         label: 'Tele2',           popular: false },
+  { domain: 'outlook.com',      label: 'Outlook COM',     popular: false },
+  { domain: 'hotmail.com',      label: 'Hotmail COM',     popular: false },
+  { domain: 'live.fr',          label: 'Live FR',         popular: false },
+  { domain: 'live.com',         label: 'Live COM',        popular: false },
+  { domain: 'msn.com',          label: 'MSN',             popular: false },
+  { domain: 'googlemail.com',   label: 'GoogleMail',      popular: false },
+  { domain: 'yahoo.com',        label: 'Yahoo COM',       popular: false },
+  { domain: 'proton.me',        label: 'Proton',          popular: false },
+  { domain: 'protonmail.com',   label: 'ProtonMail',      popular: false },
+  { domain: 'tutanota.com',     label: 'Tutanota',        popular: false },
+  { domain: 'gmx.fr',           label: 'GMX FR',          popular: false },
+  { domain: 'gmx.com',          label: 'GMX COM',         popular: false },
+  { domain: 'me.com',           label: 'Apple Me',        popular: false },
+  { domain: 'mac.com',          label: 'Apple Mac',       popular: false },
 ];
 
 let selectedDomain = 'gmail.com';
-const nlDomainBtn      = document.getElementById('nlDomainBtn');
-const nlDomainLabel    = document.getElementById('nlDomainLabel');
-const nlDomainDropdown = document.getElementById('nlDomainDropdown');
-const nlDomainSearch   = document.getElementById('nlDomainSearch');
-const nlDomainList     = document.getElementById('nlDomainList');
+
+const nlSelectBtn      = document.getElementById('nlSelectBtn');
+const nlSelectLabel    = document.getElementById('nlSelectLabel');
+const nlSelectDropdown = document.getElementById('nlSelectDropdown');
+const nlSelectSearch   = document.getElementById('nlSelectSearch');
+const nlSelectList     = document.getElementById('nlSelectList');
 const nlUsername       = document.getElementById('nl-username');
 const nlPreview        = document.getElementById('nlPreview');
 
 function updatePreview(){
   const user = nlUsername.value.trim();
-  if(user){
-    nlPreview.innerHTML = '<span>' + user + '@' + selectedDomain + '</span>';
-  } else {
-    nlPreview.innerHTML = '&nbsp;';
-  }
+  nlPreview.innerHTML = user
+    ? '<span>' + user + '@' + selectedDomain + '</span>'
+    : '&nbsp;';
 }
 
 function renderDomains(filter){
   filter = (filter || '').toLowerCase().trim();
   const filtered = DOMAINS.filter(d =>
-    d.domain.includes(filter) ||
+    d.domain.toLowerCase().includes(filter) ||
     d.label.toLowerCase().includes(filter)
   );
 
   if(filtered.length === 0){
-    nlDomainList.innerHTML = '<div class="nl-domain-empty">Aucun résultat pour "' + filter + '"</div>';
+    nlSelectList.innerHTML = '<div class="nl-select-empty">Aucun résultat pour "' + filter + '"</div>';
     return;
   }
 
   let html = '';
   if(!filter){
-    const popular = filtered.filter(d => d.tag === 'Populaire');
-    const others  = filtered.filter(d => d.tag !== 'Populaire');
+    const popular = filtered.filter(d => d.popular);
+    const others  = filtered.filter(d => !d.popular);
     if(popular.length){
-      html += '<div class="nl-domain-separator">Les plus utilisés</div>';
-      html += popular.map(d => domainItemHTML(d)).join('');
+      html += '<div class="nl-select-separator">Les plus utilisés</div>';
+      html += popular.map(d => domainOptionHTML(d)).join('');
     }
     if(others.length){
-      html += '<div class="nl-domain-separator">Tous les domaines</div>';
-      html += others.map(d => domainItemHTML(d)).join('');
+      html += '<div class="nl-select-separator">Tous les domaines</div>';
+      html += others.map(d => domainOptionHTML(d)).join('');
     }
   } else {
-    html = filtered.map(d => domainItemHTML(d)).join('');
+    html = filtered.map(d => domainOptionHTML(d)).join('');
   }
 
-  nlDomainList.innerHTML = html;
-  nlDomainList.querySelectorAll('.nl-domain-item').forEach(item => {
+  nlSelectList.innerHTML = html;
+
+  nlSelectList.querySelectorAll('.nl-select-option').forEach(item => {
     item.addEventListener('click', () => {
       selectedDomain = item.dataset.domain;
-      nlDomainLabel.textContent = selectedDomain;
+      nlSelectLabel.textContent = '@' + selectedDomain;
       closeDropdown();
       updatePreview();
       nlUsername.focus();
     });
+    item.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter') item.click();
+    });
   });
 }
 
-function domainItemHTML(d){
+function domainOptionHTML(d){
   const isSelected = d.domain === selectedDomain;
-  return `<div class="nl-domain-item${isSelected ? ' selected' : ''}" data-domain="${d.domain}" role="option" aria-selected="${isSelected}" tabindex="0">
-    <span class="nl-domain-name">${d.domain}</span>
-    <div style="display:flex;align-items:center;gap:6px;">
-      <span class="nl-domain-tag">${d.label}</span>
-      <span class="nl-domain-check">✓</span>
-    </div>
+  return `<div class="nl-select-option${isSelected ? ' selected' : ''}" data-domain="${d.domain}" role="option" aria-selected="${isSelected}" tabindex="0">
+    <span>@${d.domain}</span>
+    <span class="nl-select-option-check">✓</span>
   </div>`;
 }
 
 function openDropdown(){
-  nlDomainDropdown.classList.add('open');
-  nlDomainBtn.classList.add('open');
-  nlDomainBtn.setAttribute('aria-expanded', 'true');
-  nlDomainSearch.value = '';
+  nlSelectDropdown.classList.add('open');
+  nlSelectBtn.classList.add('open');
+  nlSelectBtn.setAttribute('aria-expanded', 'true');
+  nlSelectSearch.value = '';
   renderDomains('');
-  setTimeout(() => nlDomainSearch.focus(), 50);
+  setTimeout(() => nlSelectSearch.focus(), 50);
   setTimeout(() => {
-    const sel = nlDomainList.querySelector('.selected');
+    const sel = nlSelectList.querySelector('.selected');
     if(sel) sel.scrollIntoView({block:'nearest'});
   }, 80);
 }
 
 function closeDropdown(){
-  nlDomainDropdown.classList.remove('open');
-  nlDomainBtn.classList.remove('open');
-  nlDomainBtn.setAttribute('aria-expanded', 'false');
+  nlSelectDropdown.classList.remove('open');
+  nlSelectBtn.classList.remove('open');
+  nlSelectBtn.setAttribute('aria-expanded', 'false');
 }
 
-nlDomainBtn.addEventListener('click', (e) => {
+nlSelectBtn.addEventListener('click', (e) => {
   e.stopPropagation();
-  nlDomainDropdown.classList.contains('open') ? closeDropdown() : openDropdown();
+  nlSelectDropdown.classList.contains('open') ? closeDropdown() : openDropdown();
 });
 
-nlDomainSearch.addEventListener('input', () => renderDomains(nlDomainSearch.value));
+nlSelectSearch.addEventListener('input', () => renderDomains(nlSelectSearch.value));
 
-nlDomainSearch.addEventListener('keydown', (e) => {
-  if(e.key === 'Escape'){ closeDropdown(); nlDomainBtn.focus(); }
+nlSelectSearch.addEventListener('keydown', (e) => {
+  if(e.key === 'Escape'){ closeDropdown(); nlSelectBtn.focus(); }
   if(e.key === 'ArrowDown'){
-    const first = nlDomainList.querySelector('.nl-domain-item');
+    const first = nlSelectList.querySelector('.nl-select-option');
     if(first){ e.preventDefault(); first.focus(); }
   }
 });
-nlDomainList.addEventListener('keydown', (e) => {
-  const items = [...nlDomainList.querySelectorAll('.nl-domain-item')];
+
+nlSelectList.addEventListener('keydown', (e) => {
+  const items = [...nlSelectList.querySelectorAll('.nl-select-option')];
   const idx = items.indexOf(document.activeElement);
   if(e.key === 'ArrowDown' && idx < items.length - 1){ e.preventDefault(); items[idx+1].focus(); }
-  if(e.key === 'ArrowUp'){ e.preventDefault(); idx > 0 ? items[idx-1].focus() : nlDomainSearch.focus(); }
-  if(e.key === 'Enter' && idx >= 0){ items[idx].click(); }
-  if(e.key === 'Escape'){ closeDropdown(); nlDomainBtn.focus(); }
+  if(e.key === 'ArrowUp'){ e.preventDefault(); idx > 0 ? items[idx-1].focus() : nlSelectSearch.focus(); }
+  if(e.key === 'Escape'){ closeDropdown(); nlSelectBtn.focus(); }
 });
 
 document.addEventListener('click', (e) => {
-  if(!nlDomainDropdown.contains(e.target) && e.target !== nlDomainBtn){
+  if(!document.getElementById('nlSelectWrap').contains(e.target)){
     closeDropdown();
   }
 });
@@ -1413,7 +1434,7 @@ document.getElementById('newsletterForm').addEventListener('submit', function(e)
   setTimeout(function(){
     form.reset();
     nlUsername.value = '';
-    nlDomainLabel.textContent = 'gmail.com';
+    nlSelectLabel.textContent = '@gmail.com';
     selectedDomain = 'gmail.com';
     nlPreview.innerHTML = '&nbsp;';
     openNewsletterModal();
